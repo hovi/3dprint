@@ -57,7 +57,7 @@ module bottom() {
         }
         translate([0, 0, main_height])
         linear_extrude(overlap + fix)
-        circle(r=circle_diameter / 2 + 0.5);
+        circle(r=circle_diameter / 2 + 0.25);
         
         linear_extrude(main_height + fix)
         circle(r=circle_diameter / 2 - 3);
@@ -66,13 +66,13 @@ module bottom() {
         translate([0, 0, cylinder_h / 2 - fix])
         cylinder(h=cylinder_h, r1=outer_r + fix - x, r2=outer_smaller_r - 10 + fix - x, center=true);
         
-        translate([0, 0, 2])
+        translate([0, 0, 3])
         rotate([90, 0, 0])
         linear_extrude(outer_r)
-        circle(r=1.5);
+        circle(r=2);
         
         translate([0, - outer_r, 0])
-        cube([1, outer_r, 3], center=true);
+        cube([1.4, outer_r, 3], center=true);
 
     }
 }
@@ -100,7 +100,7 @@ module outsideRim(h=2, d=2,mid=1) {
     difference() {
         
         translate([0, 0, - full_h / 2])
-        linear_extrude(full_h * 1 - fix)
+        linear_extrude(full_h * 1 - fix, center=false)
         circle(r=circle_diameter / 2 + fix, center=true);        
         
         
@@ -112,7 +112,7 @@ module outsideRim(h=2, d=2,mid=1) {
         translate([0, 0, - h / 2 - mid / 2])
         cylinder(h=h, r1=circle_diameter / 2 + fix, r2 = circle_diameter / 2 - d + fix, center=true);
     translate([0, 0, - mid / 2])
-    linear_extrude(mid - fix)
+    linear_extrude(mid - fix, center=false)
     circle(r=circle_diameter / 2 - d + fix, center=true);
         
     }
