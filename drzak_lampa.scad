@@ -9,6 +9,8 @@ white_top_smaller = 9.8;
 extra_space = 0.4;
 extra_height = 0;
 circle_diameter = 40;
+
+main_height = white_small_height + black_height + extra_height;
 fix = 0.01;
 
 $fn = 100;
@@ -21,22 +23,63 @@ module main() {
 
 
 
-difference() {
-    main();
-    distance = 18;
-    height = white_small_height + black_height + extra_height + 0.01;
-    hole(distance, height);
-    hole(-distance, height);
-    translate([0, 0, 13 + extra_height])
-    outsideRim(4, 4, 4);
-    
-    translate([0, 0, -fix])
-    linear_extrude(extra_height + 7)
-    circle(r=circle_diameter /2 - 4);
+module top() {
+    translate([0, 0, main_height])
+    difference() {
+        main();
+        distance = 18;
+        height = main_height + 0.01;
+        hole(distance, height);
+        hole(-distance, height);
+        translate([0, 0, 13 + extra_height])
+        outsideRim(4, 4, 4);
+        
+        translate([0, 0, -fix])
+        linear_extrude(extra_height + 7)
+        circle(r=circle_diameter /2 - 4);
+    }
 }
 
 
 
+module bottom() {
+    overlap = 5;
+    outer_r = 35;
+    outer_smaller_r = circle_diameter / 2 + 3;
+    cylinder_h = main_height - 11;
+    difference() {
+        union() {
+            h = main_height + overlap;
+            translate([0, 0, cylinder_h / 2])
+            cylinder(h=cylinder_h, r1=outer_r + fix, r2=outer_smaller_r + fix, center=true);
+            linear_extrude(h)
+            circle(r=outer_smaller_r);
+        }
+        translate([0, 0, main_height])
+        linear_extrude(overlap + fix)
+        circle(r=circle_diameter / 2 + 0.5);
+        
+        linear_extrude(main_height + fix)
+        circle(r=circle_diameter / 2 - 3);
+        
+        x = 4;
+        translate([0, 0, cylinder_h / 2 - fix])
+        cylinder(h=cylinder_h, r1=outer_r + fix - x, r2=outer_smaller_r - 10 + fix - x, center=true);
+        
+        translate([0, 0, 2])
+        rotate([90, 0, 0])
+        linear_extrude(outer_r)
+        circle(r=1.5);
+        
+        translate([0, - outer_r, 0])
+        cube([1, outer_r, 3], center=true);
+
+    }
+}
+
+
+bottom();
+//top();
 
 
 module hole(distance, height) {
