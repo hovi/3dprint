@@ -6,7 +6,7 @@ wall_width=3;
 handle_height=60;
 handle_moveable_height=10;
 handle_radius = (winder_height + wall_width) / 2;
-space = 0.55;
+space = 0.45;
 $fn = 100;
 include<zpevnik_raw.scad>
 
